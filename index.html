@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ads Reward App</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src='//whephiwums.com/sdk.js' data-zone='9034072' data-sdk='show_9034072'></script>
+
+    <style>
+        /* General Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Body */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #1a0033, #330066, #4d0099);
+            color: #ffd700;
+            padding-top: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* User Card Styles */
+        .user-card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            width: 90%;
+            max-width: 400px;
+            height: 550px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            color: #ffd700;
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+            overflow: hidden;
+        }
+
+        /* Pozadie s blur efektom */
+        .user-card-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(4px);
+            z-index: -1;
+        }
+
+        .reward-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 12px 20px;
+            color: #1a0033;
+            background: #ffd700;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .reward-button i {
+            font-size: 1.4em;
+        }
+
+        .reward-button:hover {
+            background: #fff700;
+            color: #000;
+            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Bubbles Effect */
+        .bubble-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            animation: bubbleFloat linear infinite;
+        }
+
+        @keyframes bubbleFloat {
+            0% { transform: translateY(0) translateX(0); opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(var(--side-move)); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Bubble Background -->
+    <div class="bubble-container"></div>
+
+    <!-- Profile Card -->
+    <div class="user-card">
+        <!-- Pozadie s blur efektom -->
+        <div class="user-card-bg"></div>
+
+        <button class="reward-button" onclick="showRewardedAd()">
+            <i class="fas fa-robot"></i>I´m not robot
+        </button>
+    </div>
+
+    <script>
+        function showRewardedAd() {
+            if (typeof show_9034072 === 'function') {
+                show_9034072().then(() => {
+                    rewardCount += 1;  
+                    balance += 0.01;  
+
+                    localStorage.setItem('rewardCount', rewardCount);
+                    localStorage.setItem('balance', balance.toFixed(2));
+
+                    document.getElementById('reward-count').textContent = rewardCount;
+                    document.getElementById('balance').textContent = balance.toFixed(2);
+
+                }).catch(error => {
+                    console.error("Ad failed to load or display:", error);
+                });
+            } else {
+                alert("Ad is not ready yet. Try again later.");
+            }
+        }
+
+        // Create Floating Bubbles
+        function createBubbles() {
+            const container = document.querySelector('.bubble-container');
+
+            for (let i = 0; i < 20; i++) {
+                let bubble = document.createElement("div");
+                bubble.classList.add("bubble");
+
+                let size = Math.random() * 50 + 20; 
+                let positionX = Math.random() * 100; 
+                let duration = Math.random() * 5 + 5; 
+                let sideMove = (Math.random() - 0.5) * 40 + "px"; 
+
+                bubble.style.width = size + "px";
+                bubble.style.height = size + "px";
+                bubble.style.left = positionX + "vw";
+                bubble.style.animationDuration = duration + "s";
+                bubble.style.setProperty('--side-move', sideMove);
+
+                container.appendChild(bubble);
+            }
+        }
+
+        createBubbles();
+
+        // Zmena pozadia s blur efektom
+        document.addEventListener("DOMContentLoaded", function () {
+            const images = [
+                'https://img.youtube.com/vi/yPCQTxMeLzc/hqdefault.jpg',
+                'https://img.youtube.com/vi/b9nEWaNhnYs/hqdefault.jpg',
+                'https://img.youtube.com/vi/w5yRTqcWTaE/hqdefault.jpg',
+                'https://img.youtube.com/vi/_uxUF_Wmu7E/hqdefault.jpg',
+                'https://img.youtube.com/vi/xSPshxOzdoI/hqdefault.jpg',
+                'https://img.youtube.com/vi/KF__goA9GCc/hqdefault.jpg',
+                'https://img.youtube.com/vi/BovQ2KtDrYY/hqdefault.jpg'
+            ];
+
+            const randomIndex = Math.floor(Math.random() * images.length);
+            const randomImage = images[randomIndex];
+
+            // Nastavenie pozadia s blur
+            const bgElement = document.querySelector('.user-card-bg');
+            if (bgElement) {
+                bgElement.style.backgroundImage = `url('${randomImage}')`;
+            }
+        });
+    </script>
+</body>
+</html>
